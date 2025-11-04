@@ -1,0 +1,43 @@
+<!-- templates/equipes/aguardando_grupo.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Aguardando Grupo - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="waiting-container">
+    <div class="waiting-content">
+        <div class="waiting-icon">👥</div>
+        <h1 class="waiting-title">Aguardando Grupo</h1>
+        <p class="waiting-message">
+            Esta etapa requer que todos os dispositivos do grupo escaneiem o QR code.
+        </p>
+
+        <div class="waiting-stats">
+            <div class="waiting-stat">
+                <span class="stat-number">{{ dispositivos_faltantes }}</span>
+                <span class="stat-label">Dispositivos Faltantes</span>
+            </div>
+        </div>
+
+        <div class="waiting-actions">
+            <a href="{% url 'etapa_detalhe' etapa.id %}" class="btn btn-primary">
+                Atualizar Status
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline">
+                Voltar ao Dashboard
+            </a>
+        </div>
+
+        <div class="waiting-tip">
+            💡 Dica: Certifique-se que todos do grupo estão logados e escanearam o QR code.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Atualiza automaticamente a cada 10 segundos
+    setTimeout(() => {
+        window.location.reload();
+    }, 10000);
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+<!-- templates/equipes/qrcode_scanner.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Scanner QR Code - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="scanner-container">
+    <div class="scanner-header">
+        <h1>📷 Scanner de QR Code</h1>
+        <p>Aponte a câmera para o QR code da etapa</p>
+    </div>
+
+    <div class="scanner-content">
+        <div id="qr-reader" style="width: 100%; max-width: 500px; margin: 0 auto;"></div>
+        <div id="qr-result" class="qr-result"></div>
+    </div>
+
+    <div class="scanner-actions">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline">Voltar</a>
+    </div>
+</div>
+
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+        // Envia o token para validação
+        fetch("{% url 'validar_qrcode' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: `qrcode_token=${encodeURIComponent(decodedText)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            const resultElement = document.getElementById('qr-result');
+
+            if (data.success) {
+                resultElement.innerHTML = `
+                    <div class="message message-success">
+                        ✅ ${data.message}
+                        ${data.avancar ? '<br>Redirecionando...' : ''}
+                        ${data.aguardando_grupo ? `<br>Aguardando ${data.dispositivos_faltantes} dispositivo(s)` : ''}
+                    </div>
+                `;
+
+                if (data.avancar || data.fim_jogo) {
+                    setTimeout(() => {
+                        window.location.href = data.redirect_url || "{% url 'dashboard' %}";
+                    }, 2000);
+                }
+            } else {
+                resultElement.innerHTML = `
+                    <div class="message message-error">
+                        ❌ ${data.error}
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            document.getElementById('qr-result').innerHTML = `
+                <div class="message message-error">
+                    Erro na validação: ${error}
+                </div>
+            `;
+        });
+    }
+
+    function onScanFailure(error) {
+        // Lida com falhas de escaneamento (opcional)
+    }
+
+    // Inicializa o scanner
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+        "qr-reader",
+        {
+            fps: 10,
+            qrbox: { width: 250, height: 250 }
+        },
+        false
+    );
+
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
+{% endblock %}

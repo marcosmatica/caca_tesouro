@@ -1,0 +1,81 @@
+<!-- templates/equipes/dashboard.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Dashboard - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Cabeçalho do Progresso -->
+    <div class="progress-header">
+        <h1>Mapa da Jornada</h1>
+        <div class="progress-overview">
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ progresso_percentual }}%"></div>
+            </div>
+            <span class="progress-text">{{ progresso_percentual }}% Concluído</span>
+        </div>
+    </div>
+
+    <!-- Grid de Etapas -->
+    <div class="etapas-grid">
+        {% for info in etapas_info %}
+        <div class="etapa-card
+            {% if info.concluida %}etapa-concluida{% endif %}
+            {% if info.atual %}etapa-atual{% endif %}
+            {% if not info.desbloqueada %}etapa-bloqueada{% endif %}">
+
+            <div class="etapa-indicator">
+                {% if info.concluida %}
+                <span class="etapa-status">✅</span>
+                {% elif info.atual %}
+                <span class="etapa-status">🎯</span>
+                {% else %}
+                <span class="etapa-status">🔒</span>
+                {% endif %}
+            </div>
+
+            <div class="etapa-content">
+                <h3 class="etapa-nome">{{ info.etapa.nome }}</h3>
+                <p class="etapa-ordem">Etapa {{ info.etapa.ordem }}</p>
+
+                {% if info.atual and info.aguardando_grupo %}
+                <div class="etapa-alerta">
+                    ⏳ Aguardando {{ info.dispositivos_faltantes }} dispositivo(s)
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="etapa-actions">
+                {% if info.desbloqueada and not info.concluida %}
+                <a href="{% url 'etapa_detalhe' info.etapa.id %}" class="btn btn-sm btn-primary">
+                    {% if info.atual %}Continuar{% else %}Revisitar{% endif %}
+                </a>
+                {% elif info.concluida %}
+                <span class="btn btn-sm btn-success">Concluída</span>
+                {% else %}
+                <span class="btn btn-sm btn-disabled">Bloqueada</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Estatísticas Rápidas -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ user.total_tentativas_erradas }}</div>
+            <div class="stat-label">Tentativas Erradas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">
+                {% if user.data_inicio_jogo %}
+                    {{ user.data_inicio_jogo|timesince }}
+                {% else %}
+                    0:00
+                {% endif %}
+            </div>
+            <div class="stat-label">Tempo de Jogo</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

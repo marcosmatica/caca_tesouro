@@ -1,0 +1,115 @@
+<!-- templates/equipes/etapa.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}{{ etapa.nome }} - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="etapa-container">
+    <!-- Cabeçalho da Etapa -->
+    <div class="etapa-header">
+        <div class="etapa-meta">
+            <span class="etapa-badge">Etapa {{ etapa.ordem }}</span>
+            <span class="etapa-tipo">{{ etapa.get_tipo_display }}</span>
+        </div>
+        <h1 class="etapa-title">{{ etapa.nome }}</h1>
+    </div>
+
+    <!-- Timer para Etapas com Tempo Mínimo -->
+    {% if etapa.requer_tempo_minimo and tempo_minimo_restante > 0 %}
+    <div class="timer-alert">
+        ⏱️ Aguarde <span id="tempo-restante">{{ tempo_minimo_restante }}</span> segundos antes de validar
+    </div>
+    {% endif %}
+
+    <!-- Conteúdo da Etapa -->
+    <div class="etapa-content">
+        <!-- Pista -->
+        <div class="pista-card">
+            <h3 class="card-title">🎯 Pista</h3>
+            <div class="pista-text">
+                {{ etapa.pista|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Imagem da Etapa (se houver) -->
+        {% if etapa.imagem %}
+        <div class="imagem-card">
+            <img src="{{ etapa.imagem.url }}" alt="Imagem da etapa {{ etapa.nome }}" class="etapa-imagem">
+        </div>
+        {% endif %}
+
+        <!-- Formulário de Resposta (se houver) -->
+        {% if etapa.resposta_correta %}
+        <div class="resposta-card">
+            <h3 class="card-title">💡 Sua Resposta</h3>
+            <form method="post" class="resposta-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="resposta" class="form-input"
+                           placeholder="Digite sua resposta aqui..." required
+                           {% if progresso.resposta_validada %}disabled{% endif %}>
+                </div>
+                <button type="submit" class="btn btn-primary"
+                        {% if progresso.resposta_validada %}disabled{% endif %}>
+                    {% if progresso.resposta_validada %}Resposta Correta!{% else %}Validar Resposta{% endif %}
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- QR Code Scanner -->
+        {% if etapa.qrcode_imagem and not progresso.qrcode_escaneado %}
+        <div class="qrcode-card">
+            <h3 class="card-title">📷 Escaneie o QR Code</h3>
+            <p>Encontre o QR code físico e escaneie para prosseguir:</p>
+            <a href="{% url 'qrcode_scanner' %}" class="btn btn-secondary">
+                Abrir Scanner de QR Code
+            </a>
+        </div>
+        {% elif progresso.qrcode_escaneado %}
+        <div class="success-card">
+            <h3 class="card-title">✅ QR Code Validado</h3>
+            <p>QR code escaneado com sucesso!</p>
+        </div>
+        {% endif %}
+
+        <!-- Status de Sincronização de Grupo -->
+        {% if aguardando_grupo %}
+        <div class="grupo-alert">
+            <h3 class="card-title">👥 Aguardando Grupo</h3>
+            <p>Faltam {{ dispositivos_faltantes }} dispositivo(s) para validar esta etapa.</p>
+            <a href="{% url 'aguardando_grupo' etapa.id %}" class="btn btn-warning">
+                Atualizar Status
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- Navegação -->
+        <div class="navegacao-actions">
+            <a href="{% url 'dashboard' %}" class="btn btn-outline">Voltar ao Dashboard</a>
+
+            {% if progresso.todos_dispositivos_validados and progresso.resposta_validada %}
+            <span class="btn btn-success">Pronto para avançar!</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Timer para etapas com tempo mínimo
+    {% if etapa.requer_tempo_minimo and tempo_minimo_restante > 0 %}
+    let tempoRestante = {{ tempo_minimo_restante }};
+    const timerElement = document.getElementById('tempo-restante');
+
+    const timerInterval = setInterval(() => {
+        tempoRestante--;
+        timerElement.textContent = tempoRestante;
+
+        if (tempoRestante <= 0) {
+            clearInterval(timerInterval);
+            document.querySelector('.timer-alert').style.display = 'none';
+        }
+    }, 1000);
+    {% endif %}
+</script>
+{% endblock %}

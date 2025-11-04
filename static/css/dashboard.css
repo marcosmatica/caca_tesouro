@@ -1,0 +1,156 @@
+/* static/css/dashboard.css */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Progress Header */
+.progress-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.progress-header h1 {
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.progress-overview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 20px;
+    background-color: #ecf0f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+/* Etapas Grid */
+.etapas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.etapa-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    border-left: 4px solid #bdc3c7;
+    transition: all 0.3s ease;
+}
+
+.etapa-concluida {
+    border-left-color: var(--secondary-color);
+    background: linear-gradient(135deg, #fff, #d4edda);
+}
+
+.etapa-atual {
+    border-left-color: var(--primary-color);
+    background: linear-gradient(135deg, #fff, #d6eaf8);
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.etapa-bloqueada {
+    opacity: 0.6;
+    background: linear-gradient(135deg, #fff, #f2f3f4);
+}
+
+.etapa-indicator {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.etapa-content {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.etapa-nome {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.etapa-ordem {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.etapa-alerta {
+    background-color: var(--warning-color);
+    color: white;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.etapa-actions {
+    text-align: center;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .etapas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-overview {
+        flex-direction: column;
+    }
+
+    .progress-bar {
+        width: 100%;
+    }
+}

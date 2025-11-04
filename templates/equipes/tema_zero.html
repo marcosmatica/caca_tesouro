@@ -1,0 +1,31 @@
+<!-- templates/equipes/tema_zero.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Tema Zero - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="etapa-container tema-zero">
+    <div class="etapa-header">
+        <h1 class="etapa-title">🎭 Tema Zero</h1>
+        <p class="etapa-subtitle">Sua jornada começa aqui!</p>
+    </div>
+
+    <div class="etapa-content">
+        <div class="pista-card">
+            <h3 class="pista-title">Primeiro Desafio</h3>
+            <div class="pista-content">
+                {{ etapa.pista|linebreaks }}
+            </div>
+        </div>
+
+        <form method="post" class="resposta-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="senha" class="form-label">Digite a senha inicial:</label>
+                <input type="text" id="senha" name="senha" class="form-input" required autofocus>
+            </div>
+            <button type="submit" class="btn btn-primary">Validar Senha</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

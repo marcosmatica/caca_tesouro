@@ -1,0 +1,46 @@
+<!-- templates/equipes/vitoria.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Vitória! - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="victory-container">
+    <div class="victory-content">
+        <div class="victory-icon">🏆</div>
+        <h1 class="victory-title">Parabéns!</h1>
+        <p class="victory-message">
+            Você completou todas as etapas da Caça ao Tesouro!
+        </p>
+
+        <div class="victory-stats">
+            <div class="victory-stat">
+                <span class="stat-value">{{ tentativas_erradas }}</span>
+                <span class="stat-label">Tentativas Erradas</span>
+            </div>
+            <div class="victory-stat">
+                <span class="stat-value">
+                    {% if tempo_total %}
+                        {{ tempo_total }}
+                    {% else %}
+                        0:00:00
+                    {% endif %}
+                </span>
+                <span class="stat-label">Tempo Total</span>
+            </div>
+        </div>
+
+        <div class="victory-actions">
+            <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                Ver Meu Progresso
+            </a>
+            <a href="{% url 'logout' %}" class="btn btn-outline">
+                Sair
+            </a>
+        </div>
+
+        <div class="victory-celebration">
+            🎉🎊🥳
+        </div>
+    </div>
+</div>
+{% endblock %}

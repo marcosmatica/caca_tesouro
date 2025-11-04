@@ -1,0 +1,72 @@
+<!-- templates/equipes/base.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Caça ao Tesouro{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/etapa.css">
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                🗺️ Caça ao Tesouro
+            </div>
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                    <span class="nav-user">Olá, {{ user.username }}</span>
+                    <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+                    <a href="{% url 'logout' %}" class="nav-link">Sair</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Sistema de Mensagens -->
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="message message-{{ message.tags }}">
+                {{ message }}
+                <button class="message-close">&times;</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Conteúdo Principal -->
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <script>
+        // Fechar mensagens automaticamente
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                const closeBtn = message.querySelector('.message-close');
+                closeBtn.addEventListener('click', () => {
+                    message.style.display = 'none';
+                });
+
+                // Auto-remove após 5 segundos
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => message.remove(), 300);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!-- templates/etapas/painel_admin.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Painel Admin - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>🎮 Painel de Controle - Caça ao Tesouro</h1>
+        <div class="admin-stats">
+            <div class="admin-stat">
+                <span class="stat-number">{{ total_equipes }}</span>
+                <span class="stat-label">Total Equipes</span>
+            </div>
+            <div class="admin-stat">
+                <span class="stat-number">{{ equipes_jogando }}</span>
+                <span class="stat-label">Jogando</span>
+            </div>
+            <div class="admin-stat">
+                <span class="stat-number">{{ equipes_concluidas }}</span>
+                <span class="stat-label">Concluídas</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-content">
+        <!-- Tabela de Progresso -->
+        <div class="progress-table-container">
+            <table class="progress-table">
+                <thead>
+                    <tr>
+                        <th>Equipe</th>
+                        {% for etapa in etapas %}
+                        <th title="{{ etapa.nome }}">E{{ etapa.ordem }}</th>
+                        {% endfor %}
+                        <th>Tempo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in progresso_matriz %}
+                    <tr>
+                        <td class="equipe-name">{{ linha.equipe.username }}</td>
+
+                        {% for status in linha.etapas %}
+                        <td class="etapa-status
+                            {% if status.concluida %}status-concluida{% endif %}
+                            {% if status.em_andamento %}status-andamento{% endif %}">
+
+                            {% if status.concluida %}
+                            ✅
+                            {% elif status.em_andamento %}
+                            🎯
+                            {% else %}
+                            ❌
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+
+                        <td class="tempo-total">
+                            {% if linha.tempo_total %}
+                                {{ linha.tempo_total }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.progress-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.progress-table th,
+.progress-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.etapa-status {
+    font-size: 16px;
+}
+
+.status-concluida {
+    background-color: #d4edda;
+}
+
+.status-andamento {
+    background-color: #fff3cd;
+}
+
+.equipe-name {
+    font-weight: bold;
+    text-align: left !important;
+}
+</style>
+{% endblock %}
