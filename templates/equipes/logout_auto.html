@@ -1,0 +1,22 @@
+<!-- templates/equipes/logout_auto.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Saindo... - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <div class="logout-card">
+        <div class="logout-icon">👋</div>
+        <h1 class="logout-title">Saindo do Sistema</h1>
+        <p class="logout-message">Você está sendo desconectado...</p>
+        <div class="loading-spinner"></div>
+    </div>
+</div>
+
+<script>
+    // Redireciona para a página de login após 1 segundo
+    setTimeout(function() {
+        window.location.href = "{% url 'login' %}";
+    }, 1000);
+</script>
+{% endblock %}

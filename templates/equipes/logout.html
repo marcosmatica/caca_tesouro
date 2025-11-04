@@ -1,0 +1,30 @@
+<!-- templates/equipes/logout.html -->
+{% extends 'equipes/base.html' %}
+
+{% block title %}Sair - Caça ao Tesouro{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <div class="logout-card">
+        <h1 class="logout-title">Sair do Sistema</h1>
+        <p class="logout-message">Tem certeza que deseja sair?</p>
+
+        <form method="post" action="{% url 'logout' %}" id="logout-form">
+            {% csrf_token %}
+            <div class="logout-actions">
+                <button type="submit" class="btn btn-primary">Sim, Sair</button>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Submete o formulário automaticamente após 2 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            document.getElementById('logout-form').submit();
+        }, 2000);
+    });
+</script>
+{% endblock %}

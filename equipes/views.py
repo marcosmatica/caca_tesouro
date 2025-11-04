@@ -10,6 +10,13 @@ from django.views.decorators.http import require_http_methods
 from etapas.models import Etapa, ProgressoEtapa, LogAcao
 from .models import SessaoDispositivo
 from .decorators import etapa_liberada_required
+from django.contrib.auth import logout as auth_logout
+
+def custom_logout(request):
+    """View personalizada para logout com redirect automático"""
+    auth_logout(request)
+    messages.success(request, 'Você saiu do sistema com sucesso.')
+    return redirect('login')
 
 
 def login_view(request):
