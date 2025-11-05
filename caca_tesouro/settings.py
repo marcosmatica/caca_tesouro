@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'sua-chave-secreta-aqui-mude-em-producao'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', 'localhost', 'ifbrecanto.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
