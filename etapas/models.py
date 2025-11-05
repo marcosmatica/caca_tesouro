@@ -159,13 +159,13 @@ class LogAcao(models.Model):
     TIPO_LOGIN = 'login'
     TIPO_QRCODE = 'qrcode'
     TIPO_RESPOSTA = 'resposta'
-    TIPO_AVANÇO = 'avanco'
+    TIPO_AVANCO = 'avanco'
 
     TIPOS = [
         (TIPO_LOGIN, 'Login'),
         (TIPO_QRCODE, 'QR Code Escaneado'),
         (TIPO_RESPOSTA, 'Resposta Enviada'),
-        (TIPO_AVANÇO, 'Avanço de Etapa'),
+        (TIPO_AVANCO, 'Avanço de Etapa'),
     ]
 
     equipe = models.ForeignKey('equipes.Equipe', on_delete=models.CASCADE, related_name='logs')
