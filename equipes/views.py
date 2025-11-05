@@ -62,7 +62,7 @@ def tema_zero(request):
     try:
         etapa_zero = Etapa.objects.get(ordem=0, ativa=True)
     except Etapa.DoesNotExist:
-        messages.error(request, 'Configuração do jogo incompleta - Tema Zero não encontrado.')
+        messages.error(request, 'Configuração do jogo incompleta - Tema Zero não encontrada.')
         return redirect('dashboard')
 
     if request.method == 'POST':
@@ -107,6 +107,7 @@ def tema_zero(request):
 
             messages.error(request, 'Senha incorreta! Tente novamente.')
 
+    # VERIFIQUE SE ESTÁ PASSANDO A ETAPA NO CONTEXTO
     return render(request, 'equipes/tema_zero.html', {'etapa': etapa_zero})
 
 

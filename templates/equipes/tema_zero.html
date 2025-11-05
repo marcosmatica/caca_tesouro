@@ -1,4 +1,3 @@
-<!-- templates/equipes/tema_zero.html -->
 {% extends 'equipes/base.html' %}
 
 {% block title %}Tema Zero - Caça ao Tesouro{% endblock %}
@@ -11,6 +10,13 @@
     </div>
 
     <div class="etapa-content">
+        <!-- IMAGEM DA ETAPA - ADICIONE ESTA SEÇÃO -->
+        {% if etapa.imagem %}
+        <div class="imagem-card">
+            <img src="{{ etapa.imagem.url }}" alt="Imagem do Tema Zero" class="etapa-imagem">
+        </div>
+        {% endif %}
+
         <div class="pista-card">
             <h3 class="pista-title">Primeiro Desafio</h3>
             <div class="pista-content">
