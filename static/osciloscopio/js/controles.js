@@ -212,34 +212,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   atualizarFormula();
 
-  // ── Verificação de vitória via AJAX ─────────────────────
+  // ── DEPOIS (comparação local — funciona em qualquer dispositivo) ──
   let jaVenceu = false;
 
-  async function verificarVitoria() {
+  function verificarVitoria() {
     if (jaVenceu) return;
-    try {
-      const resp = await fetch(VERIFICAR_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({
-          A: estado.A, B: estado.B, C: estado.C, D: estado.D,
-          tipo_func: estado.tipoFunc
-        })
-      });
-      const data = await resp.json();
-      if (data.correto) {
-        jaVenceu = true;
-        OscEngine.setVitoria(true);
-        OscAudio.vitoria();
-        setTimeout(() => {
-          document.getElementById('victory-overlay').classList.add('show');
-        }, 700);
-      }
-    } catch (e) {
-      console.warn('Verificação AJAX falhou:', e);
+    const correto =
+      estado.A        === NIVEL.A         &&
+      estado.B        === NIVEL.B         &&
+      estado.C        === NIVEL.C         &&
+      estado.D        === NIVEL.D         &&
+      estado.tipoFunc === NIVEL.tipo_func;
+
+    if (correto) {
+      jaVenceu = true;
+      OscEngine.setVitoria(true);
+      OscAudio.vitoria();
+      setTimeout(() => {
+        document.getElementById('victory-overlay').classList.add('show');
+      }, 700);
     }
   }
 
