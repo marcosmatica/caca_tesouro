@@ -254,4 +254,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('victory-overlay').classList.remove('show');
   });
 
+  // ── Botão de confirmação manual (mobile) ─────────────────
+  document.getElementById('btn-confirmar')?.addEventListener('click', () => {
+    OscAudio.trocarFuncao(); // feedback sonoro de "enviando"
+    verificarVitoria();
+  });
 });

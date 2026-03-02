@@ -94,6 +94,16 @@
       f(x) = <span>+0</span> + <span>1</span>·sen(<span>1</span>·πx + <span>0</span>)
     </div>
 
+    <!-- ADICIONAR antes do link ← MISSÕES -->
+    <button id="btn-confirmar" style="
+      background:none; border:1px solid #33ff33; color:#33ff33;
+      font-family:'Share Tech Mono',monospace; font-size:.75rem;
+      letter-spacing:.15em; padding:.35rem .9rem; cursor:pointer;
+      box-shadow:0 0 8px rgba(51,255,51,.2); transition:.15s;
+    " onmouseover="this.style.background='#0a1f0a'"
+       onmouseout="this.style.background='none'">
+      ⊕ TRANSMITIR SINAL
+    </button>
     <a href="{% url 'osciloscopio:lista' %}" style="font-size:.65rem;color:#334433;text-decoration:none;letter-spacing:.1em">
       ← MISSÕES
     </a>
@@ -109,7 +119,7 @@
          f(x) = {{ nivel.A }} + {{ nivel.B }}·{{ nivel.tipo_func }}({{ nivel.C }}πx + {{ nivel.D }})
        </span>
     </p>
-    <button class="btn-next" id="btn-proximo">[ CONTINUAR ]</button>
+    <a class="btn-next" href="{% url 'osciloscopio:lista' %}">[ CONTINUAR ]</a>
   </div>
 </div>
 
