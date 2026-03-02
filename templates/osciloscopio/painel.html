@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSCILOSCÓPIO — {{ nivel.titulo }}</title>
+<link rel="stylesheet" href="{% static 'osciloscopio/css/osciloscopio_theme.css' %}">
+</head>
+<body>
+
+{# Dados para o JS — |safe evita que Django escape as aspas do JSON #}
+<script id="nivel-data" type="application/json">{{ nivel_json|safe }}</script>
+<script id="pontos-dica-data" type="application/json">{{ pontos_dica_json|safe }}</script>
+<input type="hidden" id="verificar-url" value="{% url 'osciloscopio:verificar' nivel.id %}">
+
+<div class="oscilloscope-cabinet">
+  <!-- Parafusos decorativos -->
+  <div class="screw tl"></div>
+  <div class="screw tr"></div>
+  <div class="screw bl"></div>
+  <div class="screw br"></div>
+
+  <!-- HEADER -->
+  <header class="cab-header">
+    <div class="power-cluster">
+      <div class="led on-red"></div>
+      <div class="led on-green"></div>
+      <div class="led"></div>
+    </div>
+    <div class="brand-plate">
+      <div class="model">MODEL: O-RS 3862</div>
+      <div class="name">OSCILOSCÓPIO</div>
+    </div>
+    <div class="mission-label">
+      {{ nivel.titulo }}<br>
+      <small style="color:#334433">{% if nivel.descricao %}{{ nivel.descricao|truncatechars:60 }}{% else %}INTERCEPTE O SINAL DE RÁDIO{% endif %}</small>
+    </div>
+  </header>
+
+  <!-- MAIN: TELA + KNOBS -->
+  <div class="cab-main">
+
+    <!-- CRT Screen -->
+    <div class="screen-housing">
+      <div class="canvas-wrapper">
+        <canvas id="oscCanvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Painel de knobs -->
+    <div class="knob-panel">
+
+      <div class="knob-group" id="knob-group-A">
+        <div class="knob-label">DESL. VERT.</div>
+        <div class="knob-value" id="val-A">+0</div>
+        <div class="knob" title="Arraste para cima/baixo ou use scroll"></div>
+        <div class="knob-sub">A</div>
+      </div>
+
+      <div class="knob-group" id="knob-group-B">
+        <div class="knob-label">AMPLITUDE</div>
+        <div class="knob-value" id="val-B">+1</div>
+        <div class="knob" title="Arraste para cima/baixo ou use scroll"></div>
+        <div class="knob-sub">B</div>
+      </div>
+
+      <div class="knob-group" id="knob-group-C">
+        <div class="knob-label">FREQUÊNCIA</div>
+        <div class="knob-value" id="val-C">+1</div>
+        <div class="knob" title="Arraste para cima/baixo ou use scroll"></div>
+        <div class="knob-sub">C</div>
+      </div>
+
+      <div class="knob-group" id="knob-group-D">
+        <div class="knob-label">FASE</div>
+        <div class="knob-value" id="val-D">+0</div>
+        <div class="knob" title="Arraste para cima/baixo ou use scroll"></div>
+        <div class="knob-sub">D</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="cab-footer">
+    <div class="func-toggle">
+      <span style="font-size:.65rem;color:#445544;letter-spacing:.1em">FUNC:</span>
+      <button class="func-btn active" data-func="sen">SEN</button>
+      <button class="func-btn" data-func="cos">COS</button>
+    </div>
+
+    <div class="formula-display" id="formula-live">
+      f(x) = <span>+0</span> + <span>1</span>·sen(<span>1</span>·πx + <span>0</span>)
+    </div>
+
+    <a href="{% url 'osciloscopio:lista' %}" style="font-size:.65rem;color:#334433;text-decoration:none;letter-spacing:.1em">
+      ← MISSÕES
+    </a>
+  </footer>
+</div>
+
+<!-- VITÓRIA -->
+<div class="victory-overlay" id="victory-overlay">
+  <div class="victory-box">
+    <h2>◈ SINAL INTERCEPTADO ◈</h2>
+    <p>FUNÇÃO IDENTIFICADA COM SUCESSO<br>
+       <span style="color:#33ff33;font-family:'Orbitron',sans-serif">
+         f(x) = {{ nivel.A }} + {{ nivel.B }}·{{ nivel.tipo_func }}({{ nivel.C }}πx + {{ nivel.D }})
+       </span>
+    </p>
+    <button class="btn-next" id="btn-proximo">[ CONTINUAR ]</button>
+  </div>
+</div>
+
+<script src="{% static 'osciloscopio/js/audio.js' %}"></script>
+<script src="{% static 'osciloscopio/js/engine.js' %}"></script>
+<script src="{% static 'osciloscopio/js/controles.js' %}"></script>
+</body>
+</html>

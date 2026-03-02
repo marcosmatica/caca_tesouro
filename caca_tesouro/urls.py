@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('equipes.urls')),
     path('etapas/', include('etapas.urls')),
+path('osciloscopio/', include('osciloscopio.urls', namespace='osciloscopio')),
 ]
 
 # Servir arquivos de mídia em desenvolvimento
